@@ -1,7 +1,8 @@
 import React, { Component } from 'react'; 
 import XLSX from 'xlsx';
 import readXlsxFile from 'read-excel-file';
-import EpochToDateConverter from './EpochToDateConverter';
+import moment from 'moment';
+
 
 class FileUploader extends Component {
 
@@ -9,6 +10,7 @@ class FileUploader extends Component {
         super(props); 
         this.state = {
             data: '',
+            epoch: ''
             
         }
     }
@@ -34,34 +36,35 @@ class FileUploader extends Component {
                 //them in state's data property
 
                   var positiveRows = new Array();
-                  var timeStamps = new Array(); 
-                  for(var i = 13; i<= 108; i++){
-                     if (rows[i][2] != 0){
-                       positiveRows.push(rows[i]); 
-                          this.setState({
+                  var epochValues = new Array();
+
+                  for(var i = 13; i <= 108; i++){
+                      
+                     if (rows[i][2] !== 0){
+                       positiveRows.push(rows[i][0]); 
+                           this.setState({
                                 data: positiveRows,
                             })
-                         
-                       //Math.round((new Date(positiveRows[i][0])).getTime() / 1000);
+                            
+                             }
+                             var ts = moment(JSON.stringify(this.state.data[i]), "D.M.YYYY H:mm").valueOf();
+                             var m = moment(ts);
+                             var s = m.format("D.M.YYYY H:mm");
+                             epochValues.push( ts);
 
-
-                        }
+                             this.setState({
+                                epoch: epochValues,
+                            })
                   }
-                   
-                    
-                  console.log("Positive value objects array",this.state.data);  
-
                 
-
                   
-
-
-                               
+               
+                  console.log("Positive value objects array",this.state.data);  
+                  console.log("Epoch values for positive values",this.state.epoch);  
+             
               })
-            
-        } 
-
-            }
+          } 
+   }
 
     render(){
         return (
