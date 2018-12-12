@@ -1,7 +1,7 @@
 import React, { Component } from 'react'; 
-import XLSX from 'xlsx';
 import readXlsxFile from 'read-excel-file';
 import moment from 'moment';
+
 
 
 class FileUploader extends Component {
@@ -47,21 +47,31 @@ class FileUploader extends Component {
                             })
                             
                              }
-                             var ts = moment(JSON.stringify(this.state.data[i]), "D.M.YYYY H:mm").valueOf();
-                             var m = moment(ts);
-                             var s = m.format("D.M.YYYY H:mm");
-                             epochValues.push( ts);
-
-                             this.setState({
-                                epoch: epochValues,
-                            })
+                             
+                             
                   }
-                
+                  if (this.state.data){
+                        for(var i = 0; i < this.state.data.length; i++){
+
+                            var ts = moment(JSON.stringify(this.state.data[i]), "D.M.YYYY HH:mm").valueOf();
+                            var m = moment(ts);
+                            var s = m.format("D.M.YYYY HH:mm");
+                            epochValues.push(ts +" " + s);
+          
+                            this.setState({
+                               epoch: epochValues,
+                           })
+
+                        }
+
+                  }
+                  
                   
                
                   console.log("Positive value objects array",this.state.data);  
                   console.log("Epoch values for positive values",this.state.epoch);  
-             
+                  
+                  
               })
           } 
    }
